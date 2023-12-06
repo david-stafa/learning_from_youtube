@@ -1,6 +1,8 @@
+import { StyledDisplay } from "./styles/StyledDisplay"
+
 export default function Display({gameOver, text}){
 
     return(
-        <div className="display">{text}</div>
+        <StyledDisplay gameover={gameOver}>{text}</StyledDisplay>
     )
 }
