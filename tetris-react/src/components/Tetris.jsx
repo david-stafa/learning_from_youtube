@@ -13,13 +13,17 @@ import { StyledTetrisWrapper, StyledTetris } from "./styles/StyledTetris";
 // Custom hooks
 import { usePlayer } from "../hooks/usePlayer";
 import { useStage } from "../hooks/useStage";
+import { useInterval } from "../hooks/useInterval";
+import { useGameStatus } from "../hooks/useGameStatus";
 
 export default function Tetris() {
   const [dropTime, setDropTime] = useState(null);
   const [gameOver, setGameOver] = useState(false);
 
   const [player, updatePlayerPos, resetPlayer, playerRotate] = usePlayer();
-  const [stage, setStage] = useStage(player, resetPlayer);
+  const [stage, setStage, rowsCleared] = useStage(player, resetPlayer);
+  const [score, setScore, rows, setRows, level, setLevel] =
+    useGameStatus(rowsCleared);
 
   console.log("re-render");
 
@@ -35,23 +39,44 @@ export default function Tetris() {
     setStage(createStage());
     resetPlayer();
     setGameOver(false);
+    setDropTime(1000);
+    setScore(0)
+    setRows(0)
+    setLevel(0)
   };
 
   const drop = () => {
-    if(!checkCollision(player, stage, {x: 0, y: 1})){
+    // Increase level when player cleared 10 rows
+    if (rows > (level + 1) * 10) {
+      setLevel((prev) => prev + 1);
+      // Increase speed
+      setDropTime(1000 / (level + 1) + 200);
+    }
+    if (!checkCollision(player, stage, { x: 0, y: 1 })) {
       updatePlayerPos({ x: 0, y: 1, collided: false });
-    } else{
+    } else {
       // Game over
-      if (player.pos.y < 1){
-        console.log('Game over')
-        setGameOver(true)
-        setDropTime(null)
+      if (player.pos.y < 1) {
+        console.log("Game over");
+        setGameOver(true);
+        setDropTime(null);
       }
-      updatePlayerPos({ x: 0, y: 0, collided: true})
+      updatePlayerPos({ x: 0, y: 0, collided: true });
+    }
+  };
+
+  const keyUp = ({ keyCode }) => {
+    if (!gameOver) {
+      if (keyCode === 40) {
+        console.log("intervall on");
+        setDropTime(1000 / (level + 1) + 200);
+      }
     }
   };
 
   const dropPlayer = () => {
+    console.log("intervall off");
+    setDropTime(null);
     drop();
   };
 
@@ -70,16 +95,24 @@ export default function Tetris() {
       //down arrow
       else if (keyCode === 40) {
         dropPlayer();
-      }
-      else if (keyCode === 38){
-        playerRotate(stage, 1)
+      } else if (keyCode === 38) {
+        playerRotate(stage, 1);
       }
     }
   };
 
+  useInterval(() => {
+    drop();
+  }, dropTime);
+
   return (
     // StyledTetrisWrapper = whole scree -> so the onKeyDown is working everywhere
-    <StyledTetrisWrapper role="button" tabIndex="0" onKeyDown={move}>
+    <StyledTetrisWrapper
+      role="button"
+      tabIndex="0"
+      onKeyDown={move}
+      onKeyUp={keyUp}
+    >
       <StyledTetris>
         <Stage stage={stage} />
         <aside>
@@ -87,9 +120,9 @@ export default function Tetris() {
             <Display gameOver={gameOver} text={"Game Over"} />
           ) : (
             <div>
-              <Display text={"Score"} />
-              <Display text={"Rows"} />
-              <Display text={"Level"} />
+              <Display text={`Score: ${score}`} />
+              <Display text={`Rows: ${rows}`} />
+              <Display text={`Level: ${level}`} />
             </div>
           )}
           <StartButton callBack={startGame} />
