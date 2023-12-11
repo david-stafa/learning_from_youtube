@@ -3,7 +3,7 @@ import { StyledStage } from "./styles/StyledStage";
 
 export default function Stage({ stage }) {
 
-  console.log(stage)
+  // console.log(stage)
 
   return (
     <StyledStage width={stage[0].length} height={stage.length}>

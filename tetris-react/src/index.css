@@ -1,8 +1,14 @@
-body{
+body {
   margin: 0;
 }
 
 @font-face {
   font-family: 'Pixel';
   src: url(./assets/font/Pixel-LCD-7.woff) format('woff');
+}
+
+@font-face {
+  font-family: "Arcade";
+  src: url(./assets/font/PublicPixel.ttf) format("truetype");
+  size-adjust: 80%;
 }
