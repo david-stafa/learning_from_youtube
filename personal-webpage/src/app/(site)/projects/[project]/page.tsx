@@ -10,6 +10,7 @@ export default async function Project({ params }: Props){
 
     const slug = params.project;
     const project = await getProject(slug)
+    console.log(project)
 
     return(
         <div className="">
