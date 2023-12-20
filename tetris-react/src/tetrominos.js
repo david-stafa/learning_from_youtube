@@ -61,6 +61,7 @@ export const TETROMINOS = {
 export const randomTetromino = () => {
   const tetrominos = "IJLOSTZ";
   const randTetromino =
+    // random tetromino generator (it generates random number -> position of a letter in array)
     tetrominos[Math.floor(Math.random() * tetrominos.length)];
   return TETROMINOS[randTetromino];
 };

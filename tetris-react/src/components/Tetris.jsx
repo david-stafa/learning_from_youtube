@@ -40,9 +40,9 @@ export default function Tetris() {
     resetPlayer();
     setGameOver(false);
     setDropTime(1000);
-    setScore(0)
-    setRows(0)
-    setLevel(0)
+    setScore(0);
+    setRows(0);
+    setLevel(0);
   };
 
   const drop = () => {
@@ -106,7 +106,7 @@ export default function Tetris() {
   }, dropTime);
 
   return (
-    // StyledTetrisWrapper = whole scree -> so the onKeyDown is working everywhere
+    // StyledTetrisWrapper = whole screen -> so the onKeyDown is working everywhere
     <StyledTetrisWrapper
       role="button"
       tabIndex="0"
