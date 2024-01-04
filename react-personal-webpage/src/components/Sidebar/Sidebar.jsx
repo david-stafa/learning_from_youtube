@@ -1,7 +1,7 @@
 import { Link, NavLink } from 'react-router-dom'
 import './sidebar.scss'
-import LogoS from '../../assets/images/logo-s.png'
-import LogoSubtitle from '../../assets/images/logo_sub.png'
+import Logo from '../../assets/images/David-logos_white.png'
+import Logo1 from '../../assets/images/David-logos_black.png'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEnvelope, faHome, faUser } from '@fortawesome/free-solid-svg-icons'
 import {
@@ -9,15 +9,23 @@ import {
   faFacebook,
   faInstagram,
   faGithub,
+  faThreads,
 } from '@fortawesome/free-brands-svg-icons'
-import Links from '../Layout/Links'
+import Links from './Links'
+import { useState } from 'react'
 
 export default function Sidebar() {
+  const [img, setImg] = useState(Logo)
+
   return (
     <div className="nav-bar">
       <Link className="logo" to="/">
-        <img src={LogoS} alt="logo" />
-        <img src={LogoSubtitle} alt="logo" className="sub-logo" />
+        <img
+          src={img}
+          alt="logo"
+          onMouseEnter={() => setImg(Logo1)}
+          onMouseLeave={() => setImg(Logo)}
+        />
       </Link>
       <nav>
         <NavLink
@@ -39,8 +47,9 @@ export default function Sidebar() {
           icon={faLinkedin}
           link="https://www.linkedin.com/in/david-stafa/"
         />
-        <Links icon={faGithub} link="https://www.facebook.com/david.stafa/" />
+        <Links icon={faGithub} link="https://github.com/david-stafa" />
         <Links icon={faFacebook} link="https://www.facebook.com/david.stafa/" />
+        <Links icon={faThreads} link="https://threads.net/david_stafa" />
         <Links icon={faInstagram} link="https://instagram.com/david_stafa" />
       </ul>
     </div>
