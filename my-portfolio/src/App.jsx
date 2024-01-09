@@ -4,7 +4,7 @@ import Footer from "./components/footer/Footer";
 import Homepage from "./components/homepage/Homepage";
 import Navbar from "./components/navbar/NavBar";
 import Projects from "./components/projects/Projects";
-import Skills from "./components/skills/skills";
+import Skills from "./components/skills/Skills";
 
 function App() {
   return (

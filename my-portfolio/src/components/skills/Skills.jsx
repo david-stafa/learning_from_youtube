@@ -1,4 +1,3 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./skills.scss";
 import { faCss3, faGitAlt, faGithub, faHtml5, faJsSquare, faLaravel, faNodeJs, faNpm, faPhp, faReact, faSass } from "@fortawesome/free-brands-svg-icons";
 import OneSkill from "./OneSkill";
