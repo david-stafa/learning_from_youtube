@@ -68,7 +68,7 @@ export default function Forecast({ data }) {
                 <div className="daily-details-grid-item">
                   <label htmlFor="">Clouds</label>
                   <label htmlFor="">{item.clouds.all}</label>
-                </div>  
+                </div>
 
                 <div className="daily-details-grid-item">
                   <label htmlFor="">Wind speed</label>
