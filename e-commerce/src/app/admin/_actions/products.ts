@@ -4,6 +4,7 @@ import db from "@/db/db";
 import { z } from "zod";
 import fs from "fs/promises";
 import { notFound, redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 const fileSchema = z.instanceof(File, { message: "Required" });
 const imageSchema = fileSchema.refine(
@@ -25,8 +26,6 @@ const editSchema = addSchema.extend({
 
 export async function addProduct(prevState: unknown, formData: FormData) {
   const result = addSchema.safeParse(Object.fromEntries(formData.entries()));
-  console.log(result);
-  console.log(formData);
 
   if (result.success === false) {
     return result.error.formErrors.fieldErrors;
@@ -50,11 +49,14 @@ export async function addProduct(prevState: unknown, formData: FormData) {
       isAvaiableForPurchase: false,
       name: data.name,
       description: data.description,
-      priceIntCents: data.priceInCents,
+      priceInCents: data.priceInCents,
       filePath,
       imagePath,
     },
   });
+
+  revalidatePath("/");
+  revalidatePath("/products");
 
   redirect("/admin/products");
 }
@@ -65,8 +67,6 @@ export async function updateProduct(
   formData: FormData
 ) {
   const result = editSchema.safeParse(Object.fromEntries(formData.entries()));
-  console.log(result);
-  console.log(formData);
 
   if (result.success === false) {
     return result.error.formErrors.fieldErrors;
@@ -99,11 +99,14 @@ export async function updateProduct(
     data: {
       name: data.name,
       description: data.description,
-      priceIntCents: data.priceInCents,
+      priceInCents: data.priceInCents,
       filePath,
       imagePath,
     },
   });
+
+  revalidatePath("/");
+  revalidatePath("/products");
 
   redirect("/admin/products");
 }
@@ -113,6 +116,9 @@ export async function toggleProductAvailability(
   isAvaiableForPurchase: boolean
 ) {
   await db.product.update({ where: { id }, data: { isAvaiableForPurchase } });
+
+  revalidatePath("/");
+  revalidatePath("/products");
 }
 
 export async function deleteProduct(id: string) {
@@ -121,4 +127,7 @@ export async function deleteProduct(id: string) {
 
   await fs.unlink(product.filePath);
   await fs.unlink(`public${product.imagePath}`);
+
+  revalidatePath("/");
+  revalidatePath("/products");
 }

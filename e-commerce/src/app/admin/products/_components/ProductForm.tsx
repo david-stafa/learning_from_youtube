@@ -17,7 +17,7 @@ export function ProductForm({ product }: { product?: Product | null }) {
     {}
   );
   const [priceInCents, setPriceInCents] = useState<number | undefined>(
-    product?.priceIntCents
+    product?.priceInCents
   );
   return (
     <form action={action} className="space-y-6">
